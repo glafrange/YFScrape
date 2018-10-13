@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using YFScrape.Models;
 
 namespace YFScrape
 {
@@ -25,6 +28,13 @@ namespace YFScrape
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddDbContext<PortfolioContext>(
+				options => options.UseMySql(Environment.GetEnvironmentVariable("ConnectionStringScraper", EnvironmentVariableTarget.User),
+					mysqlOptions =>
+					{
+						mysqlOptions.ServerVersion(new Version(10, 1, 35), ServerType.MariaDb);
+					}
+			));
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 		}
 
