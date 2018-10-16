@@ -32,7 +32,7 @@ namespace YFScrape.Controllers
 		{
 			ICollection<Stock> NewScrape = Scraper.Scraper.newScrape();
 			Portfolio NewPortfolio = new Portfolio(DateTime.Now.ToString());
-			NewPortfolio.Stocks = NewScrape;
+			//NewPortfolio.Stocks = NewScrape;
 			_context.Portfolios.Add(NewPortfolio);
 			foreach (Stock newStock in NewScrape)
 			{
