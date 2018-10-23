@@ -7,12 +7,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using YFScrape.Models;
+using Newtonsoft.Json;
 
 namespace YFScrape.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class NewPortfolioController : ControllerBase
+	public class NewPortfolioController : Controller
 	{
 		private readonly PortfolioContext _context;
 
@@ -22,9 +23,10 @@ namespace YFScrape.Controllers
 		}
 
 		[HttpGet]
-		public ICollection<Stock> GetPortfolio()
+		public JsonResult GetPortfolios()
 		{
-			return _context.Stocks.ToList();
+			//return JsonConvert.SerializeObject(_context.Stocks.ToList());
+			return Json(_context.Stocks.ToList());
 		}
 
 		[HttpPost]

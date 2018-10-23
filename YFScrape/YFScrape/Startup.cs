@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +37,10 @@ namespace YFScrape
 					}
 			));
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+			services.AddSpaStaticFiles(configuration => 
+			{
+				configuration.RootPath = "ClientApp/build";
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +56,23 @@ namespace YFScrape
 			}
 
 			app.UseHttpsRedirection();
-			app.UseMvc();
+
+			app.UseMvc(routes => 
+			{
+				routes.MapRoute(
+					name: "Default",
+					template: "{controller}/{action=Index}/{id?}");
+			});
+
+			app.UseSpa(spa =>
+			{
+				spa.Options.SourcePath = "client";
+
+				if (env.IsDevelopment())
+				{
+					spa.UseReactDevelopmentServer(npmScript: "start");
+				}
+			});
 		}
 	}
 }
