@@ -1,22 +1,23 @@
-import React, { Component } from 'react';
-import './App.css';
-import Navbar from "./components/navbar";
+import React, { Component } from 'react'
+import './App.css'
+import Navbar from './components/navbar'
 
 class App extends Component {
-  componentWillMount() {
-    fetch("/api/newportfolio")
+  componentDidMount() {
+    fetch('/api/newportfolio')
       .then(res => res.json())
-      .then(res => console.log(res))
-      .then(res => this.setState({data: res}));
+      .then(res => this.setState({stocks: res}))
+      .then(() => console.log(this.state.stocks))
+      .catch(err => console.log(err))
   }
 
   render() {
     return (
       <div>
-        <Navbar />
+        <Navbar userName='admin'/>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

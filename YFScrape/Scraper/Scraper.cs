@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace YFScrape.Scraper
+namespace YFScrape.Scraping
 {
 	public class Scraper
 	{

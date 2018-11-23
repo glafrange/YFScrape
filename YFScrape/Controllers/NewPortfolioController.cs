@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using YFScrape.Models;
+using YFScrape.Scraping;
 using Newtonsoft.Json;
 
 namespace YFScrape.Controllers
@@ -25,16 +26,15 @@ namespace YFScrape.Controllers
 		[HttpGet]
 		public JsonResult GetPortfolios()
 		{
-			//return JsonConvert.SerializeObject(_context.Stocks.ToList());
+			Response.StatusCode = 200;
 			return Json(_context.Stocks.ToList());
 		}
 
 		[HttpPost]
-		public void NewPortfolio()
+		public ActionResult NewPortfolio()
 		{
-			ICollection<Stock> NewScrape = Scraper.Scraper.newScrape();
+			ICollection<Stock> NewScrape = Scraper.newScrape();
 			Portfolio NewPortfolio = new Portfolio(DateTime.Now.ToString());
-			//NewPortfolio.Stocks = NewScrape;
 			_context.Portfolios.Add(NewPortfolio);
 			foreach (Stock newStock in NewScrape)
 			{
@@ -43,6 +43,9 @@ namespace YFScrape.Controllers
 			}
 
 			_context.SaveChanges();
+
+			Response.StatusCode = 200;
+			return Json(NewScrape);
 		}
 	}
 }
